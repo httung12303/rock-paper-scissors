@@ -1,37 +1,17 @@
-let playerWon
-let computerWon
+let playerWon = 0;
+let computerWon = 0;
+let roundCount = 0;
 
-game();
+const buttons = document.querySelectorAll('button');
+buttons.forEach(button => button.addEventListener('click', playRound));
 
-function game() {
-    playerWon = computerWon = 0;
-    for(let i = 0; i < 5; i++) {
-        alert(playRound(getComputerChoice(), getPlayerChoice()));
-    }
-    switch(true) {
-        case playerWon == computerWon:
-            alert("Draw");
-            break;
-        case playerWon > computerWon:
-            alert("You won");
-            break;
-        default:
-            alert("You lost");
-    }
-}
-
-function playRound(computerChoice, playerChoice) {
-    computerChoiceNumber = choiceInNumber(computerChoice.toLowerCase());
-    playerChoiceNumber = choiceInNumber(playerChoice.toLowerCase());
-    if(playerChoiceNumber === computerChoiceNumber - 1 || playerChoiceNumber === computerChoiceNumber + 2) {
-        playerWon++;
-        return `You won! ${capitalize(playerChoice)} beats ${capitalize(computerChoice)}.`;
-    } else if(computerChoiceNumber == playerChoiceNumber) {
-        return `It's a draw!`;
-    } else {
-        computerWon++;
-        return `You lost! ${capitalize(computerChoice)} beats ${capitalize(playerChoice)}.`;
-    }
+function playRound(e) {
+    const playerChoice = e.target.value;
+    const computerChoice = getComputerChoice();
+    console.log(playerChoice, computerChoice);
+    const roundResult = getRoundResult(playerChoice, computerChoice);
+    displayRoundResult(roundResult);
+    displayGameResut();
 }
 
 function getComputerChoice() {
@@ -46,6 +26,27 @@ function getComputerChoice() {
         default:
             return 'paper';
     }
+}
+
+function getRoundResult(playerChoice, computerChoice) {
+    const playerChoiceNum = choiceInNumber(playerChoice);
+    const computerChoiceNum = choiceInNumber(computerChoice);
+    if(playerChoiceNum === computerChoiceNum) {
+        return "It's a draw!";
+    }
+    else if(playerChoiceNum === computerChoiceNum - 1 || playerChoiceNum === computerChoiceNum + 2) {
+        playerWon++;
+        return `You won! ${capitalize(playerChoice)} beats ${capitalize(computerChoice)}!`; 
+    }
+    else {
+        computerWon++;
+        return `You lost! ${capitalize(computerChoice)} beats ${capitalize(playerChoice)}!`; 
+    }
+}
+
+function displayRoundResult(roundResult) {
+    const div = document.getElementById('round-result');
+    div.textContent = roundResult;
 }
 
 function getPlayerChoice() {
@@ -67,4 +68,22 @@ function choiceInNumber(choice) {
 
 function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function displayGameResut() {
+    roundCount++;
+    if(roundCount < 5) {
+        return;
+    }
+    const div = document.getElementById('game-result');
+    if(playerWon > computerWon) {
+        div.textContent = "You won!";
+    } else if(playerWon < computerWon) {
+        div.textContent = "You lost!";
+    } else {
+        div.textContent = "It's a draw!";
+    }
+    roundCount = 0;
+    playerWon = 0;
+    computerWon = 0;
 }
