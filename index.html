@@ -5,13 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button value="rock">Rock</button>
-    <button value="paper">Paper</button>
-    <button value="scissors">Scissors</button>
-    <div id="round-result"></div>
-    <div id="game-result"></div>
+    <div class="hidden" id="replay-container">
+        <div id="game-result">Something</div>
+        <button id="replay-button">Play Again</button>
+    </div>
+    <div id="container">
+        <h1 id="title">Choose your weapon!</h1>
+        <div id="round-result"></div>
+        <div id="score-container">
+            <div class="card-container">
+                <div class="card" id="player-card">❓</div>
+                <div class="score">You: <span id="player-score">0</span></div>
+            </div>
+            <div class="card-container">
+                <div class="card" id="computer-card">❓</div>
+                <div class="score">Computer: <span id="computer-score">0</span></div>
+            </div>
+        </div>
+        <div id="button-container">
+            <button class="choice" value="rock">🪨</button>
+            <button class="choice" value="paper">🧻</button>
+            <button class="choice" value="scissors">✂️</button>
+        </div>
+        <button id="continue-button">Continue</button>
+    </div>
     <script src="./script.js"></script>
 </body>
 </html>
