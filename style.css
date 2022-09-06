@@ -37,9 +37,10 @@ body * {
 button {
     padding: 10px;
     background-color: rgb(224, 122, 95);
-    font-size: 60px;
+    font-size: 40px;
     border-radius: 15px;
     border: 1px solid #ccc;
+    color: rgb(244, 226, 133);
 }
 
 #round-result {
@@ -50,6 +51,7 @@ button {
 
 #game-result {
     font-size: 60px;
+    color: rgb(244, 226, 133);
 }
 
 #score-container {
@@ -88,4 +90,8 @@ button {
 
 #continue-button {
     display: none;
+}
+
+.choice {
+    font-size: 60px;
 }

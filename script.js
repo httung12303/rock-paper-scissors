@@ -6,7 +6,7 @@ const choices = document.querySelectorAll('.choice');
 choices.forEach(button => button.addEventListener('click', playRound));
 
 const buttons = document.querySelectorAll('button');
-buttons.forEach(button => button.addEventListener('mouseenter', () => button.style.backgroundColor = '#55c2da'));
+buttons.forEach(button => button.addEventListener('mouseenter', () => button.style.backgroundColor = '#c884a6'));
 buttons.forEach(button => button.addEventListener('mouseleave', () => button.style.backgroundColor = 'rgb(224, 122, 95)'));
 
 const replayButton = document.getElementById('replay-button');
