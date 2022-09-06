@@ -2,8 +2,18 @@ let playerWon = 0;
 let computerWon = 0;
 let roundCount = 0;
 
+const choices = document.querySelectorAll('.choice');
+choices.forEach(button => button.addEventListener('click', playRound));
+
 const buttons = document.querySelectorAll('button');
-buttons.forEach(button => button.addEventListener('click', playRound));
+buttons.forEach(button => button.addEventListener('mouseenter', () => button.style.backgroundColor = '#55c2da'));
+buttons.forEach(button => button.addEventListener('mouseleave', () => button.style.backgroundColor = 'rgb(224, 122, 95)'));
+
+const replayButton = document.getElementById('replay-button');
+replayButton.addEventListener('click', resetGame);
+
+const continueButton = document.getElementById('continue-button');
+continueButton.addEventListener('click', () => switchDisplay(true));
 
 function playRound(e) {
     const playerChoice = e.target.value;
@@ -11,7 +21,6 @@ function playRound(e) {
     console.log(playerChoice, computerChoice);
     const roundResult = getRoundResult(playerChoice, computerChoice);
     displayRoundResult(roundResult);
-    displayGameResut();
 }
 
 function getComputerChoice() {
@@ -31,6 +40,10 @@ function getComputerChoice() {
 function getRoundResult(playerChoice, computerChoice) {
     const playerChoiceNum = choiceInNumber(playerChoice);
     const computerChoiceNum = choiceInNumber(computerChoice);
+    const computerCard = document.getElementById('computer-card');
+    const playerCard = document.getElementById('player-card');
+    computerCard.textContent = getEmoji(computerChoice);
+    playerCard.textContent = getEmoji(playerChoice);
     if(playerChoiceNum === computerChoiceNum) {
         return "It's a draw!";
     }
@@ -45,12 +58,36 @@ function getRoundResult(playerChoice, computerChoice) {
 }
 
 function displayRoundResult(roundResult) {
-    const div = document.getElementById('round-result');
-    div.textContent = roundResult;
+    const roundDiv = document.getElementById('round-result');
+    roundDiv.textContent = roundResult;
+    updateScore();
+    roundCount++;
+    if(roundCount < 5) {
+        return;
+    }
+    disableChoices();
 }
 
-function getPlayerChoice() {
-    return prompt('What will you choose?');
+function disableChoices() {
+    const buttonContainer = document.getElementById('button-container');
+    buttonContainer.style.display = 'none';
+    const continueButton = document.getElementById('continue-button');
+    continueButton.style.display = 'block';
+    const gameDiv = document.getElementById('game-result');
+    if(playerWon > computerWon) {
+        gameDiv.textContent = "You won!";
+    } else if(playerWon < computerWon) {
+        gameDiv.textContent = "You lost!";
+    } else {
+        gameDiv.textContent = "It's a draw!";
+    }
+}
+
+function updateScore() {
+    const playerScore = document.getElementById('player-score');
+    const computerScore = document.getElementById('computer-score');
+    playerScore.textContent = playerWon;
+    computerScore.textContent = computerWon;
 }
 
 function choiceInNumber(choice) {
@@ -70,20 +107,51 @@ function capitalize(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-function displayGameResut() {
-    roundCount++;
-    if(roundCount < 5) {
-        return;
+function randomNumber(number) {
+    return Math.floor(Math.random() * number);
+}
+
+function getEmoji(str) {
+    switch(str) {
+        case 'rock':
+            return '🪨';
+            break;
+        case 'paper':
+            return '🧻';
+            break;
+        case 'scissors':
+            return '✂️';
+            break;
+        default:
+            return '❓';
     }
-    const div = document.getElementById('game-result');
-    if(playerWon > computerWon) {
-        div.textContent = "You won!";
-    } else if(playerWon < computerWon) {
-        div.textContent = "You lost!";
-    } else {
-        div.textContent = "It's a draw!";
-    }
+}
+
+function resetGame() {
     roundCount = 0;
     playerWon = 0;
     computerWon = 0;
+    updateScore();
+    switchDisplay(false);
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => card.textContent = '❓');
+    const buttonContainer = document.getElementById('button-container');
+    buttonContainer.style.display = 'flex';
+    const continueButton = document.getElementById('continue-button');
+    continueButton.style.display = 'none';
+    const gameDiv = document.getElementById('game-result');
+}
+
+function switchDisplay(gameOver) {
+    const container = document.getElementById('container');
+    const replayContainer = document.getElementById('replay-container');
+    if(gameOver) {
+        container.style.display = 'none';
+        replayContainer.style.display = 'flex';
+    } else {
+        container.style.display = 'flex';
+        replayContainer.style.display = 'none';
+        const div = document.getElementById('round-result');
+        div.textContent = "";
+    }
 }
